@@ -4,6 +4,7 @@ use Egulias\EmailValidator\EmailValidator;
 
 class Swift_Mime_AttachmentAcceptanceTest extends \PHPUnit\Framework\TestCase
 {
+    public $idGenerator;
     private $contentEncoder;
     private $cache;
     private $headers;
