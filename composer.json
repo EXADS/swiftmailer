@@ -33,12 +33,5 @@
     },
     "autoload-dev": {
         "psr-0": { "Swift_": "tests/unit" }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "6.2-dev"
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
