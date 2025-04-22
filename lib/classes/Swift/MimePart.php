@@ -26,7 +26,6 @@ class Swift_MimePart extends Swift_Mime_MimePart
      */
     public function __construct($body = null, $contentType = null, $charset = null)
     {
-
         parent::__construct(
             ...Swift_DependencyContainer::getInstance()
             ->createDependenciesFor('mime.part')

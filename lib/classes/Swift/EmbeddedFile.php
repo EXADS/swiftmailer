@@ -30,10 +30,6 @@ class Swift_EmbeddedFile extends Swift_Mime_EmbeddedFile
             ...Swift_DependencyContainer::getInstance()
             ->createDependenciesFor('mime.embeddedfile')
         );
-        parent::__construct(
-            ...Swift_DependencyContainer::getInstance()
-            ->createDependenciesFor('transport.mail')
-        );
 
         $this->setBody($data);
         $this->setFilename($filename);
