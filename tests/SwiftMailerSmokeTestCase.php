@@ -9,14 +9,14 @@ class SwiftMailerSmokeTestCase extends SwiftMailerTestCase
 {
     protected function setUp()
     {
-        if (!\defined('SWIFT_SMOKE_TRANSPORT_TYPE')) {
+        if (!defined('SWIFT_SMOKE_TRANSPORT_TYPE')) {
             $this->markTestSkipped(
                 'Smoke tests are skipped if tests/smoke.conf.php is not edited'
              );
         }
     }
 
-    protected function getMailer()
+    protected function _getMailer()
     {
         switch (SWIFT_SMOKE_TRANSPORT_TYPE) {
             case 'smtp':

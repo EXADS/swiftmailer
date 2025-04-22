@@ -1,6 +1,6 @@
 <?php
 
-class Swift_MessageTest extends \PHPUnit\Framework\TestCase
+class Swift_MessageTest extends \PHPUnit_Framework_TestCase
 {
     public function testCloning()
     {
@@ -8,30 +8,26 @@ class Swift_MessageTest extends \PHPUnit\Framework\TestCase
         $message2 = new Swift_Message('subj', 'body', 'ctype');
         $message1_clone = clone $message1;
 
-        $this->recursiveObjectCloningCheck($message1, $message2, $message1_clone);
-        // the test above will fail if the two messages are not identical
-        $this->addToAssertionCount(1);
+        $this->_recursiveObjectCloningCheck($message1, $message2, $message1_clone);
     }
 
     public function testCloningWithSigners()
     {
         $message1 = new Swift_Message('subj', 'body', 'ctype');
-        $signer = new Swift_Signers_DKIMSigner(\dirname(__DIR__, 2).'/_samples/dkim/dkim.test.priv', 'test.example', 'example');
+        $signer = new Swift_Signers_DKIMSigner(dirname(dirname(__DIR__)).'/_samples/dkim/dkim.test.priv', 'test.example', 'example');
         $message1->attachSigner($signer);
         $message2 = new Swift_Message('subj', 'body', 'ctype');
-        $signer = new Swift_Signers_DKIMSigner(\dirname(__DIR__, 2).'/_samples/dkim/dkim.test.priv', 'test.example', 'example');
+        $signer = new Swift_Signers_DKIMSigner(dirname(dirname(__DIR__)).'/_samples/dkim/dkim.test.priv', 'test.example', 'example');
         $message2->attachSigner($signer);
         $message1_clone = clone $message1;
 
-        $this->recursiveObjectCloningCheck($message1, $message2, $message1_clone);
-        // the test above will fail if the two messages are not identical
-        $this->addToAssertionCount(1);
+        $this->_recursiveObjectCloningCheck($message1, $message2, $message1_clone);
     }
 
     public function testBodySwap()
     {
         $message1 = new Swift_Message('Test');
-        $html = new Swift_MimePart('<html></html>', 'text/html');
+        $html = Swift_MimePart::newInstance('<html></html>', 'text/html');
         $html->getHeaders()->addTextHeader('X-Test-Remove', 'Test-Value');
         $html->getHeaders()->addTextHeader('X-Test-Alter', 'Test-Value');
         $message1->attach($html);
@@ -58,14 +54,14 @@ class Swift_MessageTest extends \PHPUnit\Framework\TestCase
         $this->assertNotEquals($id_1, $id_2, 'Message Ids are the same');
     }
 
-    protected function recursiveObjectCloningCheck($obj1, $obj2, $obj1_clone)
+    protected function _recursiveObjectCloningCheck($obj1, $obj2, $obj1_clone)
     {
         $obj1_properties = (array) $obj1;
         $obj2_properties = (array) $obj2;
         $obj1_clone_properties = (array) $obj1_clone;
 
         foreach ($obj1_properties as $property => $value) {
-            if (\is_object($value)) {
+            if (is_object($value)) {
                 $obj1_value = $obj1_properties[$property];
                 $obj2_value = $obj2_properties[$property];
                 $obj1_clone_value = $obj1_clone_properties[$property];
@@ -86,21 +82,21 @@ class Swift_MessageTest extends \PHPUnit\Framework\TestCase
                     );
                 }
                 // recurse
-                $this->recursiveObjectCloningCheck($obj1_value, $obj2_value, $obj1_clone_value);
-            } elseif (\is_array($value)) {
+                $this->_recursiveObjectCloningCheck($obj1_value, $obj2_value, $obj1_clone_value);
+            } elseif (is_array($value)) {
                 $obj1_value = $obj1_properties[$property];
                 $obj2_value = $obj2_properties[$property];
                 $obj1_clone_value = $obj1_clone_properties[$property];
 
-                return $this->recursiveArrayCloningCheck($obj1_value, $obj2_value, $obj1_clone_value);
+                return $this->_recursiveArrayCloningCheck($obj1_value, $obj2_value, $obj1_clone_value);
             }
         }
     }
 
-    protected function recursiveArrayCloningCheck($array1, $array2, $array1_clone)
+    protected function _recursiveArrayCloningCheck($array1, $array2, $array1_clone)
     {
         foreach ($array1 as $key => $value) {
-            if (\is_object($value)) {
+            if (is_object($value)) {
                 $arr1_value = $array1[$key];
                 $arr2_value = $array2[$key];
                 $arr1_clone_value = $array1_clone[$key];
@@ -120,13 +116,13 @@ class Swift_MessageTest extends \PHPUnit\Framework\TestCase
                     );
                 }
                 // recurse
-                $this->recursiveObjectCloningCheck($arr1_value, $arr2_value, $arr1_clone_value);
-            } elseif (\is_array($value)) {
+                $this->_recursiveObjectCloningCheck($arr1_value, $arr2_value, $arr1_clone_value);
+            } elseif (is_array($value)) {
                 $arr1_value = $array1[$key];
                 $arr2_value = $array2[$key];
                 $arr1_clone_value = $array1_clone[$key];
 
-                return $this->recursiveArrayCloningCheck($arr1_value, $arr2_value, $arr1_clone_value);
+                return $this->_recursiveArrayCloningCheck($arr1_value, $arr2_value, $arr1_clone_value);
             }
         }
     }
